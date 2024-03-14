@@ -41,4 +41,31 @@ embed_model = AzureOpenAIEmbedding(
     api_version = AOAI_API_VERSION,
 )
 ```
-3. 
+3. Next step is to set our Azure OpenAI deployments as default LLM and Embedding models in LlamaIndex's instance settings.
+``` Python
+Settings.llm = llm
+Settings.embed_model = embed_model
+```
+4. We can now use SimpleDirectoryReader class to create Document objects from all files in a give directory. In our case, **data** directory contains single markdown file with description of a fictitious company, _Contoso Electronics_.
+``` Python
+documents = SimpleDirectoryReader(input_dir="data").load_data()
+```
+5. VectorStoreIndex class can help us to chunk our Document objects, geerate vector embeddings and index them in a vector store.
+``` Python
+index = VectorStoreIndex.from_documents(documents)
+```
+6. We can use our vector store as a query engine to retrieve required content and feed it to GPT-4 Turbo model for reasoning, e.g. to check about vacation perks available at Contoso.
+``` Python
+query_engine = index.as_query_engine()
+answer = query_engine.query("What are the vacation perks at Contoso Electronics?")
+```
+7. If successful, you should get an output similar to this one:
+``` JSON
+Query: What are the vacation perks at Contoso Electronics?
+-----------------
+Answer: At Contoso Electronics, the vacation perks are structured into three tiers:
+
+1. Standard Tier: Employees receive 2 weeks of vacation with a health and wellness stipend.
+2. Senior Tier: Employees receive 4 weeks of vacation along with travel vouchers for a dream destination.
+3. Executive Tier: Employees are granted 6 weeks of vacation and a luxury resort getaway with family.
+```
