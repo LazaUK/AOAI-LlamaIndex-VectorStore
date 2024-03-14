@@ -41,12 +41,12 @@ embed_model = AzureOpenAIEmbedding(
     api_version = AOAI_API_VERSION,
 )
 ```
-3. Next step is to set our Azure OpenAI deployments as default LLM and Embedding models in LlamaIndex's instance settings.
+3. Next step is to set the Azure OpenAI deployments as default LLM and Embedding models in LlamaIndex's instance settings.
 ``` Python
 Settings.llm = llm
 Settings.embed_model = embed_model
 ```
-4. We can now use SimpleDirectoryReader class to create Document objects from all files in a give directory. In our case, **data** directory contains single markdown file with description of a fictitious company, _Contoso Electronics_.
+4. We can now use the SimpleDirectoryReader class to create Document objects from all files in a give directory. In our case, the **data** directory contains single markdown file with description of a fictitious company, _Contoso Electronics_.
 ``` Python
 documents = SimpleDirectoryReader(input_dir="data").load_data()
 ```
@@ -54,7 +54,7 @@ documents = SimpleDirectoryReader(input_dir="data").load_data()
 ``` Python
 index = VectorStoreIndex.from_documents(documents)
 ```
-6. We can use our vector store as a query engine to retrieve required content and feed it to GPT-4 Turbo model for reasoning, e.g. to check about vacation perks available at Contoso.
+6. We can use our vector store as a query engine to retrieve required content and feed it to the GPT-4 Turbo model for reasoning, e.g. to check about vacation perks available at Contoso.
 ``` Python
 query_engine = index.as_query_engine()
 answer = query_engine.query("What are the vacation perks at Contoso Electronics?")
